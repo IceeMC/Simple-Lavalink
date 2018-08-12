@@ -81,6 +81,12 @@ class AudioManager extends Map {
         return get(`http://${node.host}:2333/loadtracks?identifier=${search}`)
             .set("Authorization", node.password)
             .then(res => {
+                // Lavalink versions under 3.0
+                if (Array.isArray(res.body)) {
+                    if (res.body.length) return { tracks: res.body.length ? res.body : null }
+                    return null;
+                }
+                // Lavalink version 3.0
                 if (res.body.loadType === "NO_MATCHES" || res.body.loadType === "LOAD_ERROR") return null;
                 if (res.body.loadType === "SEARCH_RESULT" || res.body.loadType === "TRACK_LOADED") return {
                     tracks: res.body.tracks
