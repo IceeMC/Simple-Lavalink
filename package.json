@@ -1,0 +1,24 @@
+{
+  "name": "simple-lavalink",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IceeMC/Simple-Lavalink.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/IceeMC/Simple-Lavalink/issues"
+  },
+  "homepage": "https://github.com/IceeMC/Simple-Lavalink#readme",
+  "dependencies": {
+    "discord.js": "^11.4.0",
+    "snekfetch": "^4.0.4",
+    "ws": "^6.0.0"
+  }
+}
