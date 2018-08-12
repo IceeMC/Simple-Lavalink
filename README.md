@@ -8,7 +8,8 @@
 
 # Installation
 Stable: `npm install simple-lavalink`
-Master: `npm install IceeMC/simple-lavalink`;
+
+Master: `npm install IceeMC/simple-lavalink`
 
 # Wanna know some more information?
 - Join our discord!
@@ -32,15 +33,18 @@ const manager = new AudioManager(client, nodes, 1);
 
 # Getting Tracks from the REST API
 The AudioManager provides a method called `getTracks`
+
 which of course gets audio tracks from the rest api
 It takes to arguments
+
 the first is the search and the second is the node host
 
 # Example
 - Probably should use this as well.
 ```js
 manager.getTracks("ytsearch:never gonna give you up")
-    .then(tracks => {
+    .then(result => {
+        const { tracks } = result;
         if (!tracks) throw "Could not fetch tracks";
         console.log(tracks[0]);
         // Output: AudioTrack { ... }

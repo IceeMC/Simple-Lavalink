@@ -75,6 +75,24 @@ class AudioManager extends Map {
         return this._returnPlayer(data, node);
     }
 
+    getTracks(search, host) {
+        const node = this.nodes.get(host);
+        if (!node) return Promise.reject(new Error(`No node with host: ${host} found.`));
+        return get(`http://${node.host}:2333/loadtracks?identifier=${search}`)
+            .set("Authorization", node.password)
+            .then(res => {
+                if (res.body.loadType === "NO_MATCHES" || res.body.loadType === "LOAD_ERROR") return null;
+                if (res.body.loadType === "SEARCH_RESULT" || res.body.loadType === "TRACK_LOADED") return {
+                    tracks: res.body.tracks
+                };
+                if (res.body.loadType === "PLAYLIST_LOADED") return {
+                    name: res.body.playlistInfo.name,
+                    tracks: res.body.tracks
+                };
+            })
+            .catch(error => { return null; });
+    }
+
     /**
      * Makes the bot leave a voice channel and deletes the player.
      * @param {string} id The guild id.

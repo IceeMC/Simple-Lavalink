@@ -13,13 +13,12 @@ declare module "simple-lavalink" {
         // Properties
         public client: Client;
         public nodes: Map<string, AudioNode>;
-        private _nodes: Array<NodeObject>;
+        public _nodes: Array<NodeObject>;
 
         // Methods
-        private _launch(): void;
         public join(data: JoinData): AudioPlayer;
+        public getTracks(search: string, host: string): Promise<TrackResult | null>;
         public leave(id: string): boolean;
-        private _returnPlayer(data: any, node: AudioNode): AudioPlayer;
     }
 
     export class AudioPlayer extends EventEmitter {
@@ -43,7 +42,6 @@ declare module "simple-lavalink" {
         public setVolume(volume: number): this;
         public setLooping(value: boolean): this;
         public seek(ms: number): this;
-        private _update(data: VoiceServerUpdateData): void;
         
         // Events
         public on(event: string, listener: Function);
@@ -70,12 +68,6 @@ declare module "simple-lavalink" {
         public nodeObj: NodeObject;
 
         // Methods
-        private _nodeHeaders(node: AudioNode): AudioNodeHeaders;
-        private _create(NodeObj: NodeObject): void;
-        private _ready(obj: NodeObject): void;
-        private _message(msg: any): void;
-        private _close(code: number, reason: null | string): void;
-        private _error(error: Error): void;
         public sendToWS(object: any): this;
 
         // Events
@@ -107,8 +99,6 @@ declare module "simple-lavalink" {
         public title: string;
         public uri: string;
 
-        private _timestamp(time: number): string;
-        private _pad(num: number, idleLength: number): string;
         public toString(): string;
         public toJSON(): AudioTrackJSON;
     }
@@ -141,6 +131,11 @@ declare module "simple-lavalink" {
         deaf?: boolean,
         mute?: boolean,
         host: string
+    };
+
+    type TrackResult = {
+        name?: string,
+        tracks: Array<string>
     };
 
     // AudioPlayer types
