@@ -1,5 +1,6 @@
 const { get } = require("snekfetch");
 const AudioNode = require("./AudioNode.js");
+const AudioPlayer = require("./AudioPlayer");
 
 /**
  * 
@@ -7,6 +8,8 @@ const AudioNode = require("./AudioNode.js");
 class AudioManager extends Map {
 
     constructor(client, nodes, shards = 0) {
+        super();
+
         /**
          * The Discord.JS client used.
          * @readonly
@@ -40,7 +43,9 @@ class AudioManager extends Map {
      */
     _launch() {
         for (const n of this._nodes) {
-            this.nodes.set(n.host, new AudioNode(this, n));
+            const node = new AudioNode(this, n);
+            node.create(n);
+            this.nodes.set(n.host, node);
         }
     }
     
@@ -59,8 +64,8 @@ class AudioManager extends Map {
             op: 4,
             shard: this.client.shard ? this.client.shard.id : 0,
             d: {
-                guild_id: data.guildId,
-                channel_id: data.channelId,
+                guild_id: data.guild,
+                channel_id: data.channel,
                 self_deaf: data.mute || false,
                 self_mute: data.deaf || false
             }
@@ -98,10 +103,12 @@ class AudioManager extends Map {
      * @private
      */
     _returnPlayer(data, node) {
-        const player = this.get(data.guildId);
+        const player = this.get(data.guild);
         if (player) return player;
-        this.set(data.guildId, new AudioPlayer(data, node, this));
-        return this.get(data.guildId);
+        this.set(data.guild, new AudioPlayer(data, node, this));
+        return this.get(data.guild);
     }
 
 }
+
+module.exports = AudioManager;

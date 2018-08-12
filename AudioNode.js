@@ -39,9 +39,6 @@ class AudioNode extends EventEmitter {
          * A object returned from the ready method.
          */
         Object.defineProperty(this, "nodeObj", { value: null, writable: true });
-
-        // Create the node
-        this.create(obj);
     }
 
     /**

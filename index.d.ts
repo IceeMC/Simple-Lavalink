@@ -116,6 +116,7 @@ declare module "simple-lavalink" {
     // Misc Types
     type NodeObject = {
         host: string,
+        password: string,
         port: number,
         region: string,
         restPort: number

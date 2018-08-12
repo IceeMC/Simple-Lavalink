@@ -50,7 +50,7 @@ class AudioPlayer extends EventEmitter {
          * The id of the guild
          * @type {String}
          */
-        this.guildId = data.guildId;
+        this.guildId = data.guild;
 
         /**
          * The queue the of the player.
@@ -175,3 +175,5 @@ class AudioPlayer extends EventEmitter {
     }
 
 }
+
+module.exports = AudioPlayer;
