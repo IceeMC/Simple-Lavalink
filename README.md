@@ -21,7 +21,7 @@ Master: `npm install IceeMC/simple-lavalink`
 - LavaLink Support
 - Bot Support
 - Meet new people / Find new developers to talk to.
-- ~~Go on a walk~~ (You can't. Your looking at our github page .-.)
+- ~~Go on a walk~~ (You can't. Your looking at our github page :D)
 
 # Using the module
 - It's really cool btw.
