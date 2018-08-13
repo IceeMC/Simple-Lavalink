@@ -78,7 +78,7 @@ class AudioManager extends Map {
 
     _convert(trackArray) {
         const tempTracks = [];
-        for (const track in trackArray) tempTracks.push(new AudioTrack(track));
+        for (const track of trackArray) tempTracks.push(new AudioTrack(track));
         return tempTracks;
     }
 
