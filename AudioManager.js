@@ -1,6 +1,7 @@
 const { get } = require("snekfetch");
 const AudioNode = require("./AudioNode.js");
-const AudioPlayer = require("./AudioPlayer");
+const AudioPlayer = require("./AudioPlayer.js");
+const AudioTrack = require("./AudioTrack.js");
 
 /**
  * 
@@ -75,22 +76,61 @@ class AudioManager extends Map {
         return this._returnPlayer(data, node);
     }
 
+    _convert(trackArray) {
+        const tempTracks = [];
+        for (const track in trackArray) tempTracks.push(new AudioTrack(track));
+        return tempTracks;
+    }
+
+    /**
+     * @typedef {TrackResult}
+     * @param {string} search The search to execute on the node
+     * @param {string} host The audio node's host.
+     * @returns {Promise<TrackResult>}
+     */
     getTracks(search, host) {
         const node = this.nodes.get(host);
         if (!node) return Promise.reject(new Error(`No node with host: ${host} found.`));
         return get(`http://${node.host}:2333/loadtracks?identifier=${search}`)
             .set("Authorization", node.password)
             .then(res => {
+                // Lavalink versions under 3.0
+                if (Array.isArray(res.body)) {
+                    if (res.body.length) return { tracks: this._convert(res.body) }
+                    return null;
+                }
+                // Lavalink version 3.0
                 if (res.body.loadType === "NO_MATCHES" || res.body.loadType === "LOAD_ERROR") return null;
                 if (res.body.loadType === "SEARCH_RESULT" || res.body.loadType === "TRACK_LOADED") return {
-                    tracks: res.body.tracks
+                    tracks: this._convert(res.body.tracks)
                 };
                 if (res.body.loadType === "PLAYLIST_LOADED") return {
                     name: res.body.playlistInfo.name,
-                    tracks: res.body.tracks
+                    tracks: this._convert(res.body.tracks)
                 };
             })
             .catch(error => { return null; });
+    }
+
+    /**
+     * Adds a audio node
+     * @returns {AudioNode}
+     */
+    addNode(node) {
+        const n = new AudioNode(node);
+        n.create(node);
+        this.nodes.set(node.host, n);
+        return n;
+    }
+
+    /**
+     * Removes an audio node.
+     * @returns {boolean}
+     */
+    removeNode(host) {
+        const node = this.nodes.get(host);
+        if (!node) return false;
+        return this.nodes.delete(node);
     }
 
     /**
@@ -114,7 +154,7 @@ class AudioManager extends Map {
     }
 
     /**
-     * Creates a new player or returns an old player.
+     * Returns a new player or an old player.
      * @param {Object} data - The object containing player data.
      * @param {AudioNode} node - The AudioNode to use.
      * @returns {AudioPlayer}

@@ -97,6 +97,7 @@ class AudioNode extends EventEmitter {
             break;
         }
         case "stats": {
+            delete resp.op;
             this.stats = resp;
             break;
         }

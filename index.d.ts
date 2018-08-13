@@ -8,7 +8,7 @@ declare module "simple-lavalink" {
     } from "discord.js";
 
     export class AudioManager extends Map<string, AudioPlayer> {
-        public constructor(client: Client, nodes: Array<NodeObject>, shards: number): this;
+        public constructor(client: Client, nodes: Array<NodeObject>, shards: number);
 
         // Properties
         public client: Client;
@@ -18,11 +18,13 @@ declare module "simple-lavalink" {
         // Methods
         public join(data: JoinData): AudioPlayer;
         public getTracks(search: string, host: string): Promise<TrackResult | null>;
+        public addNode(node: NodeObject): AudioNode;
+        public removeNode(host: string): boolean;
         public leave(id: string): boolean;
     }
 
     export class AudioPlayer extends EventEmitter {
-        public constructor(data: any, node: AudioNode, manager: AudioManager): this;
+        public constructor(data: any, node: AudioNode, manager: AudioManager);
 
         // Properties
         public data: any;
@@ -44,21 +46,21 @@ declare module "simple-lavalink" {
         public seek(ms: number): this;
         
         // Events
-        public on(event: string, listener: Function);
-        public on(event: "end", listener: (event: AudioPlayerEndEvent) => void): this;
-        public on(event: "stuck", listener: (event: AudioPlayerStuckEvent) => void): this;
-        public on(event: "error", listener: (event: AudioPlayerExceptionEvent) => void): this;
-        public on(event: "unknown", listener: (event: AudioPlayerUnknownEvent) => void): this;
+        public on(event: string, cb: Function);
+        public on(event: "end", cb: (event: AudioPlayerEndEvent) => void): this;
+        public on(event: "stuck", cb: (event: AudioPlayerStuckEvent) => void): this;
+        public on(event: "error", cb: (event: AudioPlayerExceptionEvent) => void): this;
+        public on(event: "unknown", cb: (event: AudioPlayerUnknownEvent) => void): this;
 
-        public once(event: string, listener: Function);
-        public once(event: "end", listener: (event: AudioPlayerEndEvent) => void): this;
-        public once(event: "stuck", listener: (event: AudioPlayerStuckEvent) => void): this;
-        public once(event: "error", listener: (event: AudioPlayerExceptionEvent) => void): this;
-        public once(event: "unknown", listener: (event: AudioPlayerUnknownEvent) => void): this;
+        public once(event: string, cb: Function);
+        public once(event: "end", cb: (event: AudioPlayerEndEvent) => void): this;
+        public once(event: "stuck", cb: (event: AudioPlayerStuckEvent) => void): this;
+        public once(event: "error", cb: (event: AudioPlayerExceptionEvent) => void): this;
+        public once(event: "unknown", cb: (event: AudioPlayerUnknownEvent) => void): this;
     }
 
     export class AudioNode extends EventEmitter {
-        public constructor(manager: AudioManager): this;
+        public constructor(manager: AudioManager);
 
         // Properties
         public ready: boolean;
@@ -71,25 +73,24 @@ declare module "simple-lavalink" {
         public sendToWS(object: any): this;
 
         // Events
-        public on(event: string, listener: Function): this;
-        public on(event: "ready", listener: () => void): this;
-        public on(event: "message", listener: (message: any) => void): this;
-        public on(event: "close", listener: (reason: string) => void): this;
-        public on(event: "error", listener: (error: Error) => void): this;
+        public on(event: string, cb: Function): this;
+        public on(event: "ready", cb: () => void): this;
+        public on(event: "message", cb: (message: any) => void): this;
+        public on(event: "close", cb: (reason: string) => void): this;
+        public on(event: "error", cb: (error: Error) => void): this;
 
-        public once(event: string, listener: Function): this;
-        public once(event: "ready", listener: () => void): this;
-        public once(event: "message", listener: (message: any) => void): this;
-        public once(event: "close", listener: (reason: string) => void): this;
-        public once(event: "error", listener: (error: Error) => void): this;
+        public once(event: string, cb: Function): this;
+        public once(event: "ready", cb: () => void): this;
+        public once(event: "message", cb: (message: any) => void): this;
+        public once(event: "close", cb: (reason: string) => void): this;
+        public once(event: "error", cb: (error: Error) => void): this;
     }
 
     export class AudioTrack {
-        public constructor(data: AudioTrackData, requester: User): this;
+        public constructor(data: AudioTrackData);
 
         // Properties
         public data: AudioTrackData;
-        public requester: User;
         public track: string;
         public identifier: string;
         public isSeekable: boolean;
@@ -203,12 +204,6 @@ declare module "simple-lavalink" {
     };
 
     type AudioTrackJSON = {
-        requester: {
-            username: string,
-            id: string,
-            discriminator: string,
-            tag: string
-        },
         track: string,
         identifier: string,
         isSeekable: boolean,
