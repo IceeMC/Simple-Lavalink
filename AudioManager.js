@@ -55,8 +55,8 @@ class AudioManager extends Map {
      * @param {string} data - An object containing values for the bot to join a voice channel.
      * @param {string} data.guild - The guild that owns voice channel.
      * @param {string} data.channel - The voice channel in the guild.
-     * @param {boolean} [data.mute] - Determines if the bot will be deafened when the bot joins the channel.
-     * @param {boolean} [data.deaf] - Determines if the bot will be muted when the bot joins the channel.
+     * @param {boolean} [data.mute] - Determines if the bot will be muted when the bot joins the channel.
+     * @param {boolean} [data.deaf] - Determines if the bot will be deafened when the bot joins the channel.
      * @param {boolean} data.host - The host of the AudioNode.
      * @returns {AudioPlayer} The new AudioPlayer
      */
@@ -67,8 +67,8 @@ class AudioManager extends Map {
             d: {
                 guild_id: data.guild,
                 channel_id: data.channel,
-                self_deaf: data.mute || false,
-                self_mute: data.deaf || false
+                self_mute: data.mute || false,
+                self_deaf: data.deaf || false
             }
         });
         const node = this.nodes.get(data.host);
