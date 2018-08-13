@@ -17,7 +17,7 @@ class AudioTrack {
         const seconds = parseInt((time / 1000) % 60);
         const minutes = parseInt((time / (1000 * 60)) % 60);
         const hours = parseInt((time / (1000 * 60 * 60)) % 24);
-        return `${hours === 0 ? "" : `${this._pad(hours, 2)}:`}${minutes === 0 ? "" : `${this.pad(minutes, 2)}:`}${this._pad(seconds, 2)}`;
+        return `${hours === 0 ? "" : `${this._pad(hours, 2)}:`}${minutes === 0 ? "" : `${this._pad(minutes, 2)}:`}${this._pad(seconds, 2)}`;
     }
 
     _pad(num, idleLength) {
