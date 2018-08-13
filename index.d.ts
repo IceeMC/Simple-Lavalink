@@ -136,7 +136,7 @@ declare module "simple-lavalink" {
 
     type TrackResult = {
         name?: string,
-        tracks: Array<string>
+        tracks: Array<AudioTrack>
     };
 
     // AudioPlayer types
