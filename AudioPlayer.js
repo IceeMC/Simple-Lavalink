@@ -79,6 +79,7 @@ class AudioPlayer extends EventEmitter {
         this.playing = true;
         this.playerState.currentTrack = track;
         this.playerState.currentTimestamp = Date.now();
+        this.emit("start");
         return this;
     }
 
