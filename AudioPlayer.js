@@ -167,11 +167,11 @@ class AudioPlayer extends EventEmitter {
      */
     _update(data) {
         const { me } = this.manager.client.guilds.get(this.guildId);
-        const sessionId = me.voice ? me.voice.sessionId : me.voiceState.session_id;
+        const state = me.voice ? me.voice : me.voiceState;
         this.node.sendToWS({
             op: "voiceUpdate",
             guildId: this.guildId,
-            sessionId,
+            sessionId: state.sessionId ? state.sessionId : state.session_id,
             event: data.d
         });
     }
